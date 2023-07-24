@@ -1,0 +1,8 @@
+{
+    "apiKey": "dbc15037d92be407c27e54495acdb312",
+    "baseUrlIconWeather": "https://openweathermap.org/img/wn/",
+    "baseUrl": "https://api.openweathermap.org",
+    "geolocationPath": "/geo/1.0",
+    "weatherPath": "/data/3.0",
+    "weatherUnit": "metric"
+}
