@@ -1912,14 +1912,8 @@ const Home = () => {
         </StyledGrid>
       </div>
       {historySearch.length > 0 && (
-        <>
-          <StyledGrid>
-            <Grid.Row>
-              <Grid.Column textAlign="right">
-                <h3 style={{ marginBottom: "0.5rem" }}>History</h3>
-              </Grid.Column>
-            </Grid.Row>
-          </StyledGrid>
+        <div className="p-4">
+          <h3 className="mb-2">History</h3>
           {historySearch.map((h) => (
             <Label
               horizontal
@@ -1930,7 +1924,7 @@ const Home = () => {
               {h.name}
             </Label>
           ))}
-        </>
+        </div>
       )}
       {width < sizeWidth.laptop && <Sidebar />}
       {Object.keys(dataWeather).length > 0 && (
