@@ -4,7 +4,7 @@ import { styled } from "styled-components";
 export const StyledContainer = styled.div`
   background: #211d79;
   padding: 2rem;
-  height: 100vh;
+  ${"" /* height: 100vh; */}
   overflow: auto;
 `;
 

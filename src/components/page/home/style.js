@@ -1,9 +1,9 @@
-import { Container, Grid, Tab } from "semantic-ui-react";
+import { Grid, Tab } from "semantic-ui-react";
 import { styled } from "styled-components";
 
-export const StyledContainer = styled(Container)`
+export const StyledContainer = styled.div`
   background: #f2fbff;
-  padding: 2rem;
+  ${"" /* padding: 2rem; */}
 `;
 
 export const Title = styled.div`
@@ -15,7 +15,7 @@ export const TitleBold = styled.span`
 `;
 
 export const StyledTab = styled(Tab)`
-  margin: 1rem auto;
+  margin: 1rem;
 `;
 
 export const StyledGrid = styled(Grid)`

@@ -8,13 +8,15 @@ import {
   TitleBold,
 } from "./style";
 import "../../../style/home.scss";
-import { WeatherTab } from "../../organism";
+import { Sidebar, WeatherTab } from "../../organism";
 import { Grid, Label, Search } from "semantic-ui-react";
 import { useRegularHook } from "../../../utils/hooks";
 import {
   getDataLocation,
   getDataWeather,
 } from "../../../utils/redux/action/weatherAction";
+import { useWindowSize } from "@react-hook/window-size";
+import { sizeWidth } from "../../../utils/const";
 
 const Home = () => {
   // const data = {
@@ -1760,6 +1762,8 @@ const Home = () => {
   const [searchValue, searchValueSet] = useState(initData.value);
   const [historySearch, historySearchSet] = useState([]);
 
+  const [width] = useWindowSize();
+
   const { dispatch, reduxState, ref } = useRegularHook();
 
   const dataFetch = reduxState.weather;
@@ -1868,34 +1872,45 @@ const Home = () => {
   }, []);
 
   return (
-    <StyledContainer className="container-home" fluid>
-      <StyledGrid verticalAlign="middle">
-        <Grid.Row verticalAlign="middle">
-          <Grid.Column width={8}>
-            <Title>
-              Weather <TitleBold>Forecast</TitleBold>
-            </Title>
-          </Grid.Column>
-          <Grid.Column width={8} textAlign="right">
-            <Search
-              fluid
-              loading={isLoading}
-              value={searchValue}
-              onSearchChange={(e, data) => {
-                const { value } = data;
-                handleSearchChange(value);
-              }}
-              resultRenderer={resultRenderer}
-              results={dataLocation}
-              onResultSelect={(e, data) => {
-                const { result } = data;
-                handleResultSelect(result.lat, result.lon, result.name);
-              }}
-              placeholder="Search City"
-            />
-          </Grid.Column>
-        </Grid.Row>
-      </StyledGrid>
+    <StyledContainer
+      className="container-home px-0 py-[1rem] lg:p-[2rem]"
+      fluid
+    >
+      <div className="mx-[1rem] lg:mx-0">
+        <StyledGrid verticalAlign="middle">
+          <Grid.Row verticalAlign="middle">
+            <Grid.Column
+              width={width < sizeWidth.tablet ? 16 : 8}
+              textAlign={width < sizeWidth.tablet ? "center" : "left"}
+            >
+              <Title className="mb-[1rem] md:mb-0">
+                Weather <TitleBold>Forecast</TitleBold>
+              </Title>
+            </Grid.Column>
+            <Grid.Column
+              width={width < sizeWidth.tablet ? 16 : 8}
+              textAlign={width < sizeWidth.tablet ? "center" : "right"}
+            >
+              <Search
+                fluid
+                loading={isLoading}
+                value={searchValue}
+                onSearchChange={(e, data) => {
+                  const { value } = data;
+                  handleSearchChange(value);
+                }}
+                resultRenderer={resultRenderer}
+                results={dataLocation}
+                onResultSelect={(e, data) => {
+                  const { result } = data;
+                  handleResultSelect(result.lat, result.lon, result.name);
+                }}
+                placeholder="Search City"
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </StyledGrid>
+      </div>
       {historySearch.length > 0 && (
         <>
           <StyledGrid>
@@ -1917,12 +1932,15 @@ const Home = () => {
           ))}
         </>
       )}
+      {width < sizeWidth.laptop && <Sidebar />}
       {Object.keys(dataWeather).length > 0 && (
-        <StyledTab
-          panes={tabs}
-          // defaultActiveIndex={0}
-          menu={{ secondary: true }}
-        />
+        <div>
+          <StyledTab
+            panes={tabs}
+            // defaultActiveIndex={0}
+            menu={{ secondary: true }}
+          />
+        </div>
       )}
     </StyledContainer>
   );

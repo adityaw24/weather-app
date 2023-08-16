@@ -5,6 +5,9 @@ import moment from "moment/moment";
 import { StyledGrid, StyledProgress } from "./style";
 import { IoIosWater } from "react-icons/io";
 import PropTypes from "prop-types";
+import { useWindowSize } from "@react-hook/window-size";
+import "../../../style/weatherTab.scss";
+import { sizeWidth } from "../../../utils/const";
 
 const WeatherTab = ({ fetchData, isHourly }) => {
   //   const data = [
@@ -363,6 +366,8 @@ const WeatherTab = ({ fetchData, isHourly }) => {
   const [data, dataSet] = useState(fetchData);
   const [page, pageSet] = useState(1);
 
+  const [width] = useWindowSize();
+
   useEffect(() => {
     dataSet(fetchData);
   }, [fetchData]);
@@ -378,60 +383,67 @@ const WeatherTab = ({ fetchData, isHourly }) => {
     <>
       <StyledGrid verticalAlign="middle">
         {data?.slice((page - 1) * pageSize, page * pageSize).map((d) => (
-          <Grid.Row key={d.dt}>
-            <Grid.Column width={3}>
+          <Grid.Row key={d.dt} className="mb-[1rem] md:mb-0">
+            <Grid.Column width={width < sizeWidth.tablet ? 16 : 3}>
               {isHourly
                 ? moment.unix(d.dt).format("ddd, kk:mm")
                 : moment.unix(d.dt).format("dddd")}
             </Grid.Column>
-            <Grid.Column width={2} as={Grid}>
-              <Grid.Row verticalAlign="middle">
+            <Grid.Column width={width < sizeWidth.tablet ? 4 : 2}>
+              <div>
+                <span className="container-icon">
+                  <IoIosWater />
+                </span>
+                {`${d.humidity} %`}
+              </div>
+              {/* <Grid.Row verticalAlign="middle">
                 <Grid.Column width={2}>
                   <IoIosWater />
                 </Grid.Column>
                 <Grid.Column width={14}>{`${d.humidity} %`}</Grid.Column>
-              </Grid.Row>
+              </Grid.Row> */}
             </Grid.Column>
-            <Grid.Column>
+            <Grid.Column width={width < sizeWidth.tablet ? 2 : "auto"}>
               <Image src={`${baseUrl.icon}${d.weather[0].icon}.png`} />
             </Grid.Column>
             {!isHourly && (
-              <Grid.Column as={Grid} width={10}>
-                <Grid.Row verticalAlign="middle" textAlign="center">
-                  <Grid.Column width={3}>
-                    {`${Math.floor(d.temp.min)}`} &deg;C
-                  </Grid.Column>
-                  <Grid.Column width={10}>
-                    <StyledProgress
-                      progress="value"
-                      total={Math.floor(d.temp.max)}
-                      value={String(Math.floor(d.temp.day))}
-                      error={Math.floor(d.temp.day) === Math.floor(d.temp.max)}
-                      warning={
-                        Math.floor(d.temp.day) >=
-                          Math.floor(d.temp.max) * 0.5 &&
-                        Math.floor(d.temp.day) !== Math.floor(d.temp.max)
-                      }
-                      success={
-                        Math.floor(d.temp.day) < Math.floor(d.temp.max) * 0.5 &&
-                        Math.floor(d.temp.day) !== Math.floor(d.temp.max)
-                      }
-                    />
-                  </Grid.Column>
-                  <Grid.Column width={3}>
-                    {`${Math.floor(d.temp.max)}`} &deg;C
-                  </Grid.Column>
-                </Grid.Row>
-              </Grid.Column>
+              <>
+                <Grid.Column width={10}>
+                  <div className="flex ml-2">
+                    <div>{`${Math.floor(d.temp.min)}`} &deg;C</div>
+                    <div className="mx-2 flex-grow">
+                      <StyledProgress
+                        progress="value"
+                        total={Math.floor(d.temp.max)}
+                        value={String(Math.floor(d.temp.day))}
+                        error={
+                          Math.floor(d.temp.day) === Math.floor(d.temp.max)
+                        }
+                        warning={
+                          Math.floor(d.temp.day) >=
+                            Math.floor(d.temp.max) * 0.5 &&
+                          Math.floor(d.temp.day) !== Math.floor(d.temp.max)
+                        }
+                        success={
+                          Math.floor(d.temp.day) <
+                            Math.floor(d.temp.max) * 0.5 &&
+                          Math.floor(d.temp.day) !== Math.floor(d.temp.max)
+                        }
+                      />
+                    </div>
+                    <div>{`${Math.floor(d.temp.max)}`} &deg;C</div>
+                  </div>
+                </Grid.Column>
+              </>
             )}
             {isHourly && (
-              <Grid.Column as={Grid} width={10}>
-                <Grid.Row verticalAlign="middle" textAlign="center">
-                  <Grid.Column width={3}>
-                    {`${Math.floor(d.temp)}`} &deg;C
-                  </Grid.Column>
-                </Grid.Row>
-              </Grid.Column>
+              <>
+                <Grid.Column width={10}>
+                  <div className="flex">
+                    <span>{`${Math.floor(d.temp)}`} &deg;C</span>
+                  </div>
+                </Grid.Column>
+              </>
             )}
           </Grid.Row>
         ))}

@@ -64,7 +64,7 @@ const Sidebar = () => {
   }, [dataWeather]);
 
   return (
-    <StyledContainer className="container-sidebar">
+    <StyledContainer className="container-sidebar lg:h-screen">
       <StyledGrid>
         <Grid.Row verticalAlign="middle">
           <Grid.Column width={8} textAlign="right">

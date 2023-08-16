@@ -5,8 +5,10 @@ import { Sidebar as SidebarComponent } from "./components/organism";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics, logEvent } from "firebase/analytics";
+import { useWindowSize } from "@react-hook/window-size";
 // import Home from './components/page/home/home'
 import "./style/app.scss";
+import { sizeWidth } from "./utils/const";
 
 function App() {
   // TODO: Add SDKs for Firebase products that you want to use
@@ -29,16 +31,22 @@ function App() {
   const analytics = getAnalytics(app);
   logEvent(analytics, "notification_received");
 
+  const [width] = useWindowSize();
+
+  console.log(width);
+
   return (
     <Grid className="root-grid">
       <Grid.Row stretched className="">
-        <Grid.Column width={12} stretched>
+        <Grid.Column width={width < sizeWidth.laptop ? 16 : 12} stretched>
           <Home />
           {/* home */}
         </Grid.Column>
-        <Grid.Column width={4} stretched>
-          <SidebarComponent />
-        </Grid.Column>
+        {width > sizeWidth.tablet && (
+          <Grid.Column width={4} stretched>
+            <SidebarComponent />
+          </Grid.Column>
+        )}
       </Grid.Row>
     </Grid>
   );
