@@ -9,7 +9,7 @@ export const StyledContainer = styled.div`
 `;
 
 export const StyledGrid = styled(Grid)`
-  margin: 2rem auto !important;
+  ${"" /* margin: 2rem auto !important; */}
 `;
 
 export const RowWrapper = styled(Grid.Row)`

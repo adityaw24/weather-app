@@ -17,10 +17,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+// import { useWindowSize } from "@react-hook/window-size";
 
 const Sidebar = () => {
   const { dispatch, reduxState, dateNow } = useRegularHook();
   const [dataChart, dataChartSet] = useState([]);
+
+  // const [width] = useWindowSize();
 
   const dataFetch = reduxState.weather;
   const dataWeather = dataFetch.weather;
@@ -67,17 +70,28 @@ const Sidebar = () => {
     <StyledContainer className="container-sidebar lg:h-screen">
       <StyledGrid>
         <Grid.Row verticalAlign="middle">
-          <Grid.Column width={8} textAlign="right">
-            <img
-              src={`${baseUrl.icon}${dataWeatherCurrent?.weather[0]?.icon}.png`}
-              style={{
-                float: "right",
-                // marginRight: "1rem",
-                height: "8rem",
-              }}
-            />
+          <Grid.Column
+            // width={width < sizeWidth.laptop ? 16 : 8}
+            width={16}
+            textAlign="center"
+          >
+            <div className="flex justify-center">
+              <img
+                src={`${baseUrl.icon}${dataWeatherCurrent?.weather[0]?.icon}.png`}
+                style={{
+                  // float: "right",
+                  placeItems: "center",
+                  // marginRight: "1rem",
+                  height: "8rem",
+                }}
+              />
+            </div>
           </Grid.Column>
-          <Grid.Column width={8}>
+          <Grid.Column
+            // width={width < sizeWidth.laptop ? 16 : 8}
+            width={16}
+            textAlign="center"
+          >
             <p
               style={{
                 fontSize: "1.7rem",
